@@ -60,9 +60,11 @@ namespace PoCTree.Services
             Source.AddOrUpdate(dtos);
 
             bool DefaultPredicate(Node<IDto, string> node) => node.IsRoot;
+
+            //bool DefaultPredicate(Node<IDto, string> node) => node.Item.DtoType == DtoType.Folder;
             
             var tree = Source.Connect()
-                .TransformToTree(dto => dto.GetMyParentId(), Observable.Return((Func<Node<IDto, string>, bool>)DefaultPredicate))
+                .TransformToTree(dto => dto.GetMyParentId(), Observable.Return((Func<Node<IDto, string>, bool>)DefaultPredicate))                
                 .Transform(n => new MyNode(n))
                 .Sort(SortExpressionComparer<MyNode>.Ascending(node =>
                 {
